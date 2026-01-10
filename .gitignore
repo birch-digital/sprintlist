@@ -22,3 +22,6 @@ media/
 # JetBrains
 .idea/
 *.iml
+
+# Database
+db.sqlite3
