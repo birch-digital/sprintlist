@@ -1,1 +1,24 @@
+# Virtual environments
 /venv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distro
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# JetBrains
+.idea/
+*.iml
