@@ -11,5 +11,38 @@
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
+
+    <br><br><br>
+
+    <h2>Create a new Kanban board</h2>
+    <form action="{% url 'boards:create_board' %}" method="post">
+        {% csrf_token %}
+        <div>
+            {{ form.title.label_tag }}
+            {{ form.title }}
+        </div>
+        <div>
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+        <button tpye="submit">Create board</button>
+    </form>
+
+    <br><br><br>
+
+    <h2>Current boards</h2>
+    {% if boards %}
+        <ul>
+            {% for board in boards %}
+            <li>
+                {{ board.title }}
+                <br>
+                {{ board.description }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No boards currently</p>
+    {% endif %}
 </body>
 </html>
