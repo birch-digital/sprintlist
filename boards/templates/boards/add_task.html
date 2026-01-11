@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Add task to {{ board.title }}{% endblock %}
+
+{% block content %}
+    <h1>Add task to {{ board.title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+
+    <a href="{% url 'boards:board_detail' board.id %}">Back to Board</a>
+{% endblock %}

@@ -15,7 +15,17 @@
         <ul>
             {% for task in tasks %}
                 {% if task.state == 0 %}
-                <li>{{ task.title }}: {{ task.get_state_display }}</li>
+                <li>
+                    {{ task.task_title }}
+                    <form method="post" action="{% url 'boards:update_task_state' board.id task.id %}">
+                        {% csrf_token %}
+                        <select name="state" onchange="this.form.submit()">
+                            {% for value, label in task.State.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </li>
                 {% endif %}
             {% empty %}
                 <li>No tasks yet.</li>
@@ -28,7 +38,17 @@
         <ul>
             {% for task in tasks %}
                 {% if task.state == 1 %}
-                <li>{{ task.title }}: {{ task.get_state_display }}</li>
+                <li>
+                    {{ task.task_title }}
+                    <form method="post" action="{% url 'boards:update_task_state' board.id task.id %}">
+                        {% csrf_token %}
+                        <select name="state" onchange="this.form.submit()">
+                            {% for value, label in task.State.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </li>
                 {% endif %}
             {% empty %}
                 <li>No tasks yet.</li>
@@ -41,7 +61,17 @@
         <ul>
             {% for task in tasks %}
                 {% if task.state == 2 %}
-                <li>{{ task.title }}: {{ task.get_state_display }}</li>
+                <li>
+                    {{ task.task_title }}
+                    <form method="post" action="{% url 'boards:update_task_state' board.id task.id %}">
+                        {% csrf_token %}
+                        <select name="state" onchange="this.form.submit()">
+                            {% for value, label in task.State.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </li>
                 {% endif %}
             {% empty %}
                 <li>No tasks yet.</li>
