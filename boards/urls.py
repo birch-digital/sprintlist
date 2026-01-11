@@ -10,4 +10,5 @@ app_name = 'boards'
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('create/', views.create_board, name='create_board'),
+    path('<int:board_id>/tasks/add/', views.add_task, name='add_task')
 ]
