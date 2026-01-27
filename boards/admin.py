@@ -10,8 +10,8 @@ class BoardAdmin(admin.ModelAdmin):
 
 @admin.register(Sprint)
 class SprintAdmin(admin.ModelAdmin):
-    list_display = ('title', 'board', 'get_owner')
-    list_filter = ('board',)
+    list_display = ('title', 'board', 'start_date', 'due_date', 'get_owner')
+    list_filter = ('board', 'start_date')
     
     def get_owner(self, obj):
         return obj.board.owner

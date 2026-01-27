@@ -2,6 +2,7 @@
 ## Django imports
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.functions import Now
 
 # Auth user setup
 User = get_user_model()
@@ -26,6 +27,8 @@ class Sprint(models.Model):
         related_name='sprints'
     )
     title = models.CharField(max_length=40)
+    start_date = models.DateField(db_default=Now())
+    due_date = models.DateField()
 
     def __str__(self):
         return self.title

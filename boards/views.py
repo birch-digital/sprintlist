@@ -36,7 +36,11 @@ class BoardForm(forms.ModelForm):
 class SprintForm(forms.ModelForm):
     class Meta:
         model = Sprint
-        fields = ['title']
+        fields = ['title', 'start_date', 'due_date']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'due_date': forms.DateInput(attrs={'type': 'date'})
+        }
 
 ## ---
 ## Adding Tasks
