@@ -35,6 +35,87 @@
     </div>
     {% if sprints %}
     <section class="sprint-overview">
+        <div class="card summary">
+            Something's going here!
+        </div>
+        <div class="card pie">
+            <div class="chart">
+                <div class="middle-summary" id="_chart_total">4</div>
+                <canvas id="myChart"></canvas>
+            </div>  
+            <div class="legend">
+                <h4>Task Progress for all sprints</h4>
+                <div class="rows">
+                    <div class="row">
+                        <div class="marker" style="background-color: #af0000;"></div>
+                        <div class="text" id="_chart_legend_todo">13 Items Todo</div>
+                    </div>
+                    <div class="row">
+                        <div class="marker" style="background-color: orange;"></div>
+                        <div class="text" id="_chart_legend_wip">23 Items In Progress</div>
+                    </div>
+                    <div class="row">
+                        <div class="marker" style="background-color: green;"></div>
+                        <div class="text" id="_chart_legend_done">45 Items Done</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="sprints-list">
+        {% for sprint in sprints %}
+        <div class="sprint">
+            <div class="left">
+                <div class="date-lockup">
+                    <div class="title">Start Date</div>
+                    <div class="date start-date" data-date="{{ sprint.info.start_date|date:'Y-m-d' }}">{{ sprint.info.start_date }}</div>
+                    <div class="days start-days">Started 22 days ago</div>
+                </div>
+                <div class="status-pill">Task Status</div>
+            </div>
+            <div class="center">
+                <div class="title-bar">
+                    <h2>{{ sprint.info.title }}</h2>
+                    <div class="status">{{ sprint.counts.done }}/{{ sprint.counts.total }} complete</div>
+                </div>
+                {% if sprint.counts.total > 0 %}
+                <div class="progress-bar">
+                    {% if sprint.counts.todo > 0 %}
+                        {{ sprint.todostyle|safe }}
+                    {% endif %}
+                    {% if sprint.counts.wip > 0 %}
+                        {{ sprint.wipstyle|safe }}
+                    {% endif %}
+                    {% if sprint.counts.done > 0 %}
+                        {{ sprint.donestyle|safe }}
+                    {% endif %}
+                </div>
+                {% endif %}
+                <div class="task-progress">
+                    <div class="item todo">
+                        <div class="title">TODO</div>
+                        <div class="count">{{ sprint.counts.todo }}</div>
+                    </div>
+                    <div class="item wip">
+                        <div class="title">WIP</div>
+                        <div class="count">{{ sprint.counts.wip }}</div>
+                    </div>
+                    <div class="item done">
+                        <div class="title">DONE</div>
+                        <div class="count">{{ sprint.counts.done }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="date-lockup">
+                    <div class="title">Due Date</div>
+                    <div class="date due-date" data-date="{{ sprint.info.due_date|date:'Y-m-d' }}">{{ sprint.info.due_date }}</div>
+                    <div class="days due-days">Started 22 days ago</div>
+                </div>
+                <a class="button" href="/boards/board/{{ board.id }}/sprint/{{ sprint.info.id }}">View This Sprint</a>
+            </div>
+        </div>
+        {% endfor %}
     </section>
     {% else %}
     <div class="no-boards-notice">
@@ -44,23 +125,10 @@
     </div>
     {% endif %}
     <!-- Sprints -->
-    <section>
-      <h2>Sprints</h2>
-      {% if sprints %}
-      <ul>
-        {% for sprint in sprints %}
-        <li>
-          <a href="{% url 'boards:sprint_detail' board.id sprint.id %}">
-            {{ sprint.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      {% else %}
-        <p>No sprints yet.</p>
-      {% endif %}
-    </section>
-    <a class="button" href="{% url 'boards:dashboard' %}">Back to All Boards</a>
 </div>
+<script>
+    const chart_data = {{ pie_data | safe }};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
 <script src="{% static 'scripts/sprints.js' %}"></script>
 {% endblock %}
