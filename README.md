@@ -1,4 +1,4 @@
-# SimplyKan
+# SprintList
 A minimalist Kanban board for project task completion.
 
 ## Contents
