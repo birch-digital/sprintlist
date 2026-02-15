@@ -37,6 +37,10 @@
                                 {% endfor %}
                             </select>
                         </form>
+                        <form method="post" action="{% url 'boards:delete_task' board.id sprint.id task.id %}">
+                          {% csrf_token %}
+                          <button type="submit">Delete Task</button>
+                        </form>
                     </div>
                 </li>
                 {% endif %}

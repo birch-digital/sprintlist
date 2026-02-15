@@ -114,6 +114,7 @@ def dashboard(request):
 ## ---
 @login_required
 def create_board(request):
+    ''' Create '''
     if request.method == 'POST':
         form = BoardForm(request.POST)
         if form.is_valid():
@@ -125,6 +126,7 @@ def create_board(request):
 
 @login_required
 def board_detail(request, board_id):
+    ''' Read '''
     board = get_object_or_404(Board, id=board_id, owner=request.user)
     sprints = Sprint.objects.filter(board=board).order_by('id')
 
@@ -228,6 +230,7 @@ def delete_sprint(request, board_id, sprint_id):
 ## ---
 @login_required
 def add_task(request, board_id, sprint_id):
+    ''' Create '''
     board = Board.objects.get(id=board_id, owner=request.user)
     sprint = get_object_or_404(Sprint, id=sprint_id, board=board)
 
@@ -254,6 +257,7 @@ def add_task(request, board_id, sprint_id):
 
 @login_required
 def update_task_state(request, board_id, sprint_id, task_id):
+    ''' Update '''
     board = get_object_or_404(Board, id=board_id, owner=request.user)
     sprint = get_object_or_404(Sprint, id=sprint_id, board=board)
     task = get_object_or_404(Task, id=task_id, sprint=sprint)
@@ -269,4 +273,17 @@ def update_task_state(request, board_id, sprint_id, task_id):
             sprint_id=sprint_id
         )
 
+@login_required
+def delete_task(request, board_id, sprint_id, task_id):
+    ''' Delete '''
+    board = get_object_or_404(Board, id=board_id, owner=request.user)
+    sprint = get_object_or_404(Sprint, id=sprint_id, board=board)
+    task = get_object_or_404(Task, id=task_id, sprint=sprint)
 
+    if request.method == 'POST':
+        task.delete()
+        return redirect(
+            'boards:sprint_detail', 
+            board_id=board_id, 
+            sprint_id=sprint_id
+        )

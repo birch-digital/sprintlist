@@ -51,4 +51,9 @@ urlpatterns = [
         views.update_task_state, 
         name='update_task_state',
     ),
+    path(
+        'board/<int:board_id>/sprint/<int:sprint_id>/tasks/<int:task_id>/delete/',
+        views.delete_task,
+        name='delete_task'
+    ),
 ]
