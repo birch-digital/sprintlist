@@ -113,6 +113,10 @@
                     <div class="days due-days">Started 22 days ago</div>
                 </div>
                 <a class="button" href="/boards/board/{{ board.id }}/sprint/{{ sprint.info.id }}">View This Sprint</a>
+                <form method="post" action="{% url 'boards:delete_sprint' board.id sprint.info.id %}">
+                  {% csrf_token %}
+                  <button type="submit">Delete Sprint</button>
+                </form>
             </div>
         </div>
         {% endfor %}

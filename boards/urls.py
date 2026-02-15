@@ -18,11 +18,13 @@ urlpatterns = [
         views.create_board, 
         name='create_board',
     ),
+    # Boards
     path(
         'board/<int:board_id>/', 
         views.board_detail, 
         name='board_detail',
     ),
+    # Sprints
     path(
         'board/<int:board_id>/sprints/create/', 
         views.create_sprint, 
@@ -33,6 +35,12 @@ urlpatterns = [
         views.sprint_detail, 
         name='sprint_detail',
     ),
+    path(
+        'board/<int:board_id>/sprints/<int:sprint_id>/delete/',
+        views.delete_sprint,
+        name='delete_sprint'
+    ),
+    # Tasks
     path(
         'board/<int:board_id>/sprint/<int:sprint_id>/tasks/add/', 
         views.add_task, 
