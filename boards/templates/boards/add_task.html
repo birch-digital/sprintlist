@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Add task to {{ board.title }}{% endblock %}
+{% block title %}Add Task{% endblock %}
 
 {% block content %}
 <div class="limit-width">
-    <h1>Add task to {{ board.title }}</h1>
+    <h1>Add Task</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <a class="button" href="{% url 'boards:board_detail' board.id %}">Back to Board</a>
+        <a class="button" href="{% url 'boards:board_detail' board.id %}">Return to Board</a>
         <button class="green" type="submit">Save</button>
     </form>
 </div>

@@ -46,7 +46,7 @@ class Task(models.Model):
         related_name='tasks'
     )
     task_title = models.CharField(max_length=100)
-    task_details = models.TextField()
+    task_details = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now=True)
     state = models.IntegerField(choices=State.choices, default=State.TODO)
 
