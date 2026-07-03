@@ -20,7 +20,7 @@
         <div class="input-row">
             {{ form.due_date.label_tag }}
             {{ form.due_date }}
-        </div> 
+        </div>
         <button class="green" type="submit">Add Sprint</button>
         <button class="cancel" id="_dialog_close" type="button">Cancel</button>
     </form>
@@ -36,13 +36,61 @@
     {% if sprints %}
     <section class="sprint-overview">
         <div class="card summary">
-            Something's going here!
+            {# STUB: hardcoded May 2026 mockup for the sprint-timeline concept. #}
+            {# Not wired to real sprint dates or a dynamic month/year - visual concept only, pending real implementation. #}
+            <div class="calendar-mock">
+                <div class="calendar-mock-header">July 2026</div>
+                <div class="calendar-grid">
+                    <div class="cal-dow">Mon</div>
+                    <div class="cal-dow">Tue</div>
+                    <div class="cal-dow">Wed</div>
+                    <div class="cal-dow">Thu</div>
+                    <div class="cal-dow">Fri</div>
+                    <div class="cal-dow">Sat</div>
+                    <div class="cal-dow">Sun</div>
+                    <div class="cal-day empty"></div>
+                    <div class="cal-day empty"></div>
+                    <div class="cal-day empty"></div>
+                    <div class="cal-day empty"></div>
+                    <div class="cal-day s1"><span>1</span></div>
+                    <div class="cal-day s1"><span>2</span></div>
+                    <div class="cal-day s1"><span>3</span></div>
+                    <div class="cal-day s1"><span>4</span></div>
+                    <div class="cal-day s1"><span>5</span></div>
+                    <div class="cal-day"><span>6</span></div>
+                    <div class="cal-day"><span>7</span></div>
+                    <div class="cal-day s2"><span>8</span></div>
+                    <div class="cal-day s2"><span>9</span></div>
+                    <div class="cal-day s2"><span>10</span></div>
+                    <div class="cal-day s2"><span>11</span></div>
+                    <div class="cal-day s2"><span>12</span></div>
+                    <div class="cal-day s2"><span>13</span></div>
+                    <div class="cal-day s2"><span>14</span></div>
+                    <div class="cal-day s2"><span>15</span></div>
+                    <div class="cal-day s2"><span>16</span></div>
+                    <div class="cal-day s2"><span>17</span></div>
+                    <div class="cal-day s2"><span>18</span></div>
+                    <div class="cal-day s2"><span>19</span></div>
+                    <div class="cal-day s2"><span>20</span></div>
+                    <div class="cal-day s2"><span>21</span></div>
+                    <div class="cal-day s2"><span>22</span></div>
+                    <div class="cal-day"><span>23</span></div>
+                    <div class="cal-day"><span>24</span></div>
+                    <div class="cal-day"><span>25</span></div>
+                    <div class="cal-day s3"><span>26</span></div>
+                    <div class="cal-day s3"><span>27</span></div>
+                    <div class="cal-day s3"><span>28</span></div>
+                    <div class="cal-day s3"><span>29</span></div>
+                    <div class="cal-day s3"><span>30</span></div>
+                    <div class="cal-day s3"><span>31</span></div>
+                </div>
+            </div>
         </div>
         <div class="card pie">
             <div class="chart">
                 <div class="middle-summary" id="_chart_total">4</div>
                 <canvas id="myChart"></canvas>
-            </div>  
+            </div>
             <div class="legend">
                 <h4>Task Progress for all sprints</h4>
                 <div class="rows">
@@ -64,6 +112,8 @@
     </section>
     <section class="sprints-list">
         {% for sprint in sprints %}
+        {# STUB: sprint indicator colour cycles through a fixed 6-colour palette - placeholder for future sprint colour-coding feature. #}
+        {% cycle 'var(--sprint-1)' 'var(--sprint-2)' 'var(--sprint-3)' 'var(--sprint-4)' 'var(--sprint-5)' 'var(--sprint-6)' as sprint_colour silent %}
         <div class="sprint">
             <div class="left">
                 <div class="date-lockup">
@@ -75,7 +125,10 @@
             </div>
             <div class="center">
                 <div class="title-bar">
-                    <h2>{{ sprint.info.title }}</h2>
+                    <div class="sprint-title-row">
+                        <span class="sprint-dot" style="background-color: {{ sprint_colour }};"></span>
+                        <h2>{{ sprint.info.title }}</h2>
+                    </div>
                     <div class="status">{{ sprint.counts.done }}/{{ sprint.counts.total }} complete</div>
                 </div>
                 {% if sprint.counts.total > 0 %}
@@ -112,11 +165,21 @@
                     <div class="date due-date" data-date="{{ sprint.info.due_date|date:'Y-m-d' }}">{{ sprint.info.due_date }}</div>
                     <div class="days due-days">Started 22 days ago</div>
                 </div>
-                <a class="button" href="/boards/board/{{ board.id }}/sprint/{{ sprint.info.id }}">View This Sprint</a>
+                <div class="sprint-actions">
+                <a class="button green icon square" href="/boards/board/{{ board.id }}/sprint/{{ sprint.info.id }}" aria-label="View This Sprint" title="View This Sprint">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                        <path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l481-480q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 31q0 16-5.5 30.5T794-624L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                    </svg>
+                </a>
                 <form method="post" action="{% url 'boards:delete_sprint' board.id sprint.info.id %}">
                   {% csrf_token %}
-                  <button type="submit">Delete Sprint</button>
+                  <button type="submit" class="icon danger square" aria-label="Delete Sprint" title="Delete Sprint">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                          <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                      </svg>
+                  </button>
                 </form>
+                </div>
             </div>
         </div>
         {% endfor %}

@@ -3,6 +3,13 @@
     --colour-secondary: #E0FF4F;
     --colour-text: var(--colour-primary);
     --colour-bg: #E6EDF2;
+    /* STUB: sprint colour-coding palette - placeholder for future sprint colour-coding feature */
+    --sprint-1: #8B5CF6;
+    --sprint-2: #EC4899;
+    --sprint-3: #14B8A6;
+    --sprint-4: #6366F1;
+    --sprint-5: #06B6D4;
+    --sprint-6: #D946EF;
 }
 
 body, html {
@@ -119,6 +126,7 @@ button, a.button, .account-pill {
     box-sizing: border-box;
     padding: 12px 24px;
     border: 2px solid var(--colour-primary);
+    background-color: transparent;
     color: var(--colour-primary);
     text-decoration: none;
     display: inline-block;
@@ -146,7 +154,7 @@ button:hover, a.button:hover {
     color: var(--colour-bg);
 }
 
-button.icon, .account-pill {
+button.icon, a.button.icon, .account-pill {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -162,6 +170,26 @@ button.cancel {
 button.cancel:hover {
     background-color: #af0000;
     color: var(--colour-bg);
+}
+
+button.danger, a.button.danger {
+    background-color: #af0000;
+    border-color: #af0000;
+    color: white;
+}
+
+button.danger:hover, a.button.danger:hover {
+    background-color: #8A0000;
+    border-color: #8A0000;
+    color: white;
+}
+
+button.square, a.button.square {
+    width: 44px;
+    height: 44px;
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
 }
 
 button.logout {
@@ -347,11 +375,57 @@ section.sprint-overview .card {
 }
 
 section.sprint-overview .summary {
-    text-align: center;
-    font-size: 25px;
     box-sizing: border-box;
-    padding-top: 80px;
+}
+
+/* STUB: calendar mockup styling below - hardcoded May 2026 visual concept, pending real dynamic implementation */
+
+.calendar-mock-header {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 16px;
+    column-gap: 0px;
+}
+
+.cal-dow {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
     opacity: 0.6;
+    padding-bottom: 6px;
+}
+
+.cal-day {
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 13px;
+    padding: 6px 0px;
+}
+
+.cal-day.empty {
+    opacity: 0;
+}
+
+.cal-day.s1 {
+    background-color: var(--sprint-1);
+    color: white;
+}
+
+.cal-day.s2 {
+    background-color: var(--sprint-2);
+    color: white;
+}
+
+.cal-day.s3 {
+    background-color: var(--sprint-3);
+    color: white;
 }
 
 section.sprint-overview .pie {
@@ -442,6 +516,24 @@ section.sprints-list {
     margin: 0px 0px 10px 0px;
 }
 
+.sprint-title-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* STUB: sprint indicator dot - placeholder for future sprint colour-coding feature */
+.sprint-dot {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 50%;
+    position: relative;
+    top: -3px;
+}
+
 .sprint .status-pill {
     background-color: #E9F2FF;
     color: var(--colour-primary);
@@ -492,8 +584,12 @@ section.sprints-list {
     text-align: right;
 }
 
-.sprint .right a {
-    margin-top: 20px;
+.sprint-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 40px;
 }
 
 .task-progress {
