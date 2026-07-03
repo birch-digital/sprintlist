@@ -90,31 +90,27 @@ form.create button {
 }
 
 header {
+    background-color: var(--colour-primary);
     box-sizing: border-box;
-    padding: 20px 0px;
-    border-bottom: 2px solid var(--colour-primary);
+    padding: 14px 0px;
+    border-bottom: 2px solid var(--colour-secondary);
+}
+
+.header-logo {
+    display: block;
+    height: 70px;
+    width: auto;
 }
 
 header .lockup {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 20px;
 }
 
 header a {
     text-decoration: none;
-}
-
-header h1 {
-    margin: 0px;
-    font-size: 42px;
-    font-weight: 400;
-    color: var(--colour-primary);
-}
-
-header h1 span {
-    color: var(--colour-secondary);
-    font-weight: 700;
 }
 
 button, a.button, .account-pill {
@@ -157,32 +153,115 @@ button.icon, .account-pill {
     gap: 10px;
 }
 
-button.logout, button.cancel {
+button.cancel {
     color: #af0000;
     border-color: #af0000;
 }
 
-button.logout svg {
-    fill: #af0000;
-}
-
-button.logout:hover, button.cancel:hover {
+button.cancel:hover {
     background-color: #af0000;
     color: var(--colour-bg);
 }
 
+button.logout {
+    background-color: #af0000;
+    border-color: #af0000;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+button.logout svg {
+    fill: white;
+}
+
+button.logout:hover {
+    background-color: #8A0000;
+    border-color: #8A0000;
+    color: white;
+}
+
 button.logout:hover svg {
-    fill: var(--colour-bg);
+    fill: white;
+}
+
+.account-menu {
+    position: relative;
+}
+
+.account-menu summary {
+    list-style: none;
+}
+
+.account-menu summary::-webkit-details-marker {
+    display: none;
 }
 
 .account-pill {
-    background-color: var(--colour-primary);
-    color: var(--colour-bg);
-    cursor: default;
+    background-color: transparent;
+    border-color: transparent;
+    color: white;
+    cursor: pointer;
+    padding: 14px 28px;
+    font-size: 18px;
+}
+
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0px;
+    min-width: 180px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.25);
+    padding: 8px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 10;
+}
+
+.account-dropdown form {
+    margin: 0px;
+}
+
+.account-dropdown .menu-item,
+.account-dropdown button.logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--colour-primary);
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.account-dropdown .menu-item:hover,
+.account-dropdown button.logout:hover {
+    background-color: #EFF2F2;
+    color: var(--colour-primary);
+}
+
+.account-dropdown button.logout,
+.account-dropdown button.logout svg,
+.account-dropdown button.logout:hover,
+.account-dropdown button.logout:hover svg {
+    color: #af0000;
+    fill: #af0000;
 }
 
 .account-pill svg {
-    fill: var(--colour-bg);
+    fill: var(--colour-secondary);
 }
 
 main {
