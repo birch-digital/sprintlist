@@ -28,7 +28,6 @@
         <a class="board" href="{% url 'boards:board_detail' board.id %}">
             <div class="title-bar">
                 <h2>{{ board.title }}</h2>
-                <div class="status">{{ board.done }}/{{ board.total }} complete</div>
             </div>
             {% if board.total > 0 %}
                 <div class="progress-bar">
