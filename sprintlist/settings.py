@@ -39,12 +39,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'simplykan.urls'
+ROOT_URLCONF = 'sprintlist.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "simplykan" / "templates"],
+        'DIRS': [BASE_DIR / "sprintlist" / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,7 +59,7 @@ TEMPLATES = [
 LOGIN_REDIRECT_URL = 'boards:dashboard'
 LOGIN_URL = 'login'
 
-WSGI_APPLICATION = 'simplykan.wsgi.application'
+WSGI_APPLICATION = 'sprintlist.wsgi.application'
 
 
 # Database
