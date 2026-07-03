@@ -1,8 +1,8 @@
 :root {
     --colour-primary: #0B3954;
     --colour-secondary: #E0FF4F;
-    --colour-text: #2E2E2E;
-    --colour-bg: #EFF2F2;
+    --colour-text: var(--colour-primary);
+    --colour-bg: #E6EDF2;
 }
 
 body, html {
