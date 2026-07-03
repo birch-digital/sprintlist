@@ -10,6 +10,7 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
+import datetime
 import json
 
 ## ---
@@ -166,13 +167,34 @@ def board_detail(request, board_id):
             sprintinfo.donestyle = create_bar('done', (counts.done / counts.total) * 100)
 
         sprint_list.append(sprintinfo)
-        
+
+    today = datetime.date.today()
+    current_sprint = next(
+        (s for s in sprint_list if s.info.start_date <= today <= s.info.due_date),
+        None
+    )
+    if current_sprint is not None:
+        current_sprint_data = {
+            "todo": current_sprint.counts.todo,
+            "wip": current_sprint.counts.wip,
+            "done": current_sprint.counts.done
+        }
+    else:
+        current_sprint_data = {"todo": 0, "wip": 0, "done": 0}
+
     form = SprintForm()
 
     return render(
-        request, 
-        'boards/board_detail.html', 
-        {'board': board, 'sprints': sprint_list, 'form': form, 'pie_data': json.dumps(total_tasks)}
+        request,
+        'boards/board_detail.html',
+        {
+            'board': board,
+            'sprints': sprint_list,
+            'form': form,
+            'pie_data': json.dumps(total_tasks),
+            'current_sprint': current_sprint,
+            'current_pie_data': json.dumps(current_sprint_data)
+        }
     )
 
 ## ---

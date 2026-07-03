@@ -77,9 +77,9 @@ function renderSprints()
     });
 }
 
-function renderChart(chart_data)
+function renderChart(chart_data, idSuffix = '')
 {
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('myChart' + idSuffix);
 
     if (ctx == undefined) {return false;}
 
@@ -99,6 +99,7 @@ function renderChart(chart_data)
             }]
         },
         options: {
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false,
@@ -107,12 +108,12 @@ function renderChart(chart_data)
         }
     });
 
-    const total_el = document.getElementById('_chart_total');
+    const total_el = document.getElementById('_chart_total' + idSuffix);
     total_el.innerText = chart_data.todo + chart_data.wip + chart_data.done;
 
-    const todo_legend = document.getElementById('_chart_legend_todo');
-    const wip_legend = document.getElementById('_chart_legend_wip');
-    const done_legend = document.getElementById('_chart_legend_done');
+    const todo_legend = document.getElementById('_chart_legend_todo' + idSuffix);
+    const wip_legend = document.getElementById('_chart_legend_wip' + idSuffix);
+    const done_legend = document.getElementById('_chart_legend_done' + idSuffix);
 
     todo_legend.innerText = chart_data.todo + " tasks todo";
     wip_legend.innerText = chart_data.wip + " tasks in progress";
@@ -122,3 +123,4 @@ function renderChart(chart_data)
 new addSprintDialog();
 renderSprints();
 renderChart(chart_data);
+renderChart(current_chart_data, '_current');
