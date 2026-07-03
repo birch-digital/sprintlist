@@ -25,7 +25,7 @@
     {% if boards %}
     <div class="boards">
         {% for board in boards %}
-        <div class="board">
+        <a class="board" href="{% url 'boards:board_detail' board.id %}">
             <div class="title-bar">
                 <h2>{{ board.title }}</h2>
                 <div class="status">{{ board.done }}/{{ board.total }} complete</div>
@@ -60,10 +60,9 @@
                     <div class="count">{{ board.done }}</div>
                 </div>
             </div>
-            <a class="button" href="{% url 'boards:board_detail' board.id %}">View This Project</a>
-        </div>
+        </a>
         {% endfor %}
-    </ul>
+    </div>
     {% else %}
         <div class="no-boards-notice">
             <h2>You've got no projects!</h2>

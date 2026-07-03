@@ -292,6 +292,15 @@ section h1 {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 0px 12px 0px #d5d9da;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.boards .board:hover {
+    box-shadow: 0px 8px 24px 0px rgba(11, 57, 84, 0.25);
+    transform: translateY(-3px);
 }
 
 .boards .board .title-bar {
@@ -321,10 +330,6 @@ section h1 {
 .boards .board .progress-bar {
     display: flex;
     width: 100%;
-}
-
-.boards .board a {
-    text-align: center;
 }
 
 section.sprint-overview {
