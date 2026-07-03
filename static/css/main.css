@@ -1,6 +1,6 @@
 :root {
-    --colour-primary: #007A8D;
-    --colour-secondary: #0099B0;
+    --colour-primary: #0B3954;
+    --colour-secondary: #E0FF4F;
     --colour-text: #2E2E2E;
     --colour-bg: #EFF2F2;
 }
@@ -15,7 +15,7 @@ body, html {
 
 body {
     background: var(--colour-bg);
-}   
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
@@ -118,7 +118,7 @@ header h1 span {
 }
 
 button, a.button, .account-pill {
-    border-radius: 50px;
+    border-radius: 10px;
     box-sizing: border-box;
     padding: 12px 24px;
     border: 2px solid var(--colour-primary);
@@ -133,13 +133,15 @@ button, a.button, .account-pill {
 }
 
 button.green, a.button.green {
-    border-color: green;
-    color: green;
+    background-color: #BFD7EA;
+    border-color: #BFD7EA;
+    color: var(--colour-primary);
 }
 
 button.green:hover, a.button.green:hover {
-    background-color: green;
-    color: var(--colour-bg);
+    background-color: var(--colour-secondary);
+    border-color: var(--colour-secondary);
+    color: var(--colour-primary);
 }
 
 button:hover, a.button:hover {
@@ -564,15 +566,15 @@ section.kanban-columns .column ul li.no-tasks {
 }
 
 section.kanban-columns .column ul li.card-todo {
-    background-color: #ffe9e9; 
+    background-color: #ffe9e9;
 }
 
 section.kanban-columns .column ul li.card-wip {
-    background-color: #fff1d9; 
+    background-color: #fff1d9;
 }
 
 section.kanban-columns .column ul li.card-done {
-    background-color: #e8ffe8; 
+    background-color: #e8ffe8;
 }
 
 .kanban-view-header {
@@ -593,9 +595,7 @@ p.kanban-board-desc {
 
 body.login {
     text-align: center;
-    background: linear-gradient(-45deg, var(--colour-primary), var(--colour-secondary));
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: var(--colour-primary);
     height: 100vh;
     box-sizing: border-box;
     padding-top: 100px;
@@ -606,17 +606,20 @@ body.login form {
 }
 
 .login-wrap {
-    background-color: white;
+    background-color: var(--colour-primary);
     box-sizing: border-box;
-    padding: 60px 120px;
+    padding: 60px 120px 30px 120px;
     border-radius: 10px;
+    /*border: 2px solid var(--colour-secondary);*/
+    color: white;
 }
 
-.login-wrap h1 {
-    margin-top: 0px;
-    font-size: 48px;
-    font-weight: 400;
-    color: var(--colour-primary);
+.login-logo {
+    display: block;
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    margin: 0 auto 10px auto;
 }
 
 .login-wrap h2 {
@@ -625,15 +628,10 @@ body.login form {
     color: var(--colour-primary);
 }
 
-.login-wrap h1 span {
-    font-weight: 700;
-    color: var(--colour-secondary);
-}
-
 .login-wrap button {
-    background-color: white;
-    width: 100%;
-    margin-top: 30px;
+    width: 220px;
+    display: block;
+    margin: 75px auto 0 auto;
 }
 
 ul.errorlist, .error-notice {
@@ -662,7 +660,7 @@ ul.errorlist {
 }
 
 .about-login a {
-    color: #85ff85;
+    color: var(--colour-secondary);
 }
 
 .about-login a:hover {

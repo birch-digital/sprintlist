@@ -10,8 +10,7 @@
 <body class="login">
     <div class="limit-width login">
         <div class="login-wrap">
-            <h1><span>Sprint</span>List</h1>
-            <br>
+            <img src="{% static 'img/logo.svg' %}" alt="SprintList" class="login-logo">
             {% if form.errors %}
             <div class="error-notice">Sorry we couldn't log you in!</div>
             {% endif %}
@@ -28,11 +27,12 @@
                 </div>
                 <button class="green" type="submit">Log in</button>
             </form>
+            {% comment %}
             <p class="about-register">Need an account?<br><a href="{% url 'register' %}">Register Here!</a></p>
+            {% endcomment %}
         </div>
         <div class="about-login">
-            Created by <a href="https://github.com/j0shymitsu">@j0shymitsu</a> and <a href="https://github.com/GingerBunny">@GingerBunny</a>
-            using <a href="https://www.djangoproject.com/">Django</a>
+            Created by <a href="https://www.birchdigital.uk/" target="_blank">Birch Digital</a>
         </div>
     </div>
 </body>
