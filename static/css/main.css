@@ -1001,31 +1001,54 @@ select.change-task-state {
 .services .service {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    width: 340px;
+    gap: 14px;
+    width: 280px;
     background-color: white;
     box-sizing: border-box;
-    padding: 30px;
+    padding: 20px 24px;
     border-radius: 10px;
     box-shadow: 0px 0px 12px 0px #d5d9da;
 }
 
 .services .service .title-bar h2 {
+    font-size: 20px;
     margin: 0px;
+    overflow-wrap: anywhere;
 }
 
-.services .service .desc {
-    margin: 0px;
-    opacity: 0.8;
+.service-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: auto;
 }
 
-.services .service .status-pill {
-    align-self: flex-start;
+.service-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.stat {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--colour-primary);
+}
+
+.stat .stat-count,
+.stat .stat-unit {
+    font-size: 14px;
+    text-transform: uppercase;
+    opacity: 0.7;
 }
 
 .service-actions {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    align-items: center;
     gap: 10px;
 }

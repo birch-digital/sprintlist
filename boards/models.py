@@ -22,8 +22,7 @@ class Board(models.Model):
 ## to auto-generate that project's sprints
 class Service(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='services')
-    title = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
+    title = models.CharField(max_length=40)
     estimated_days = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):

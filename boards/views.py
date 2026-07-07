@@ -8,6 +8,7 @@
 ## ---
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 import datetime
@@ -75,10 +76,7 @@ class UpdateState(forms.ModelForm):
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Service
-        fields = ['title', 'description', 'estimated_days']
-        widgets = {
-            'description': forms.Textarea(attrs={'rows': 3}),
-        }
+        fields = ['title', 'estimated_days']
 
 ## ---
 ## Adding a service's task checklist
@@ -366,7 +364,9 @@ def delete_task(request, board_id, sprint_id, task_id):
 @login_required
 def services_list(request):
     ''' Read '''
-    services = Service.objects.filter(owner=request.user).order_by('title')
+    services = Service.objects.filter(owner=request.user).annotate(
+        task_count=Count('template_tasks')
+    ).order_by('title')
 
     return render(
         request,
