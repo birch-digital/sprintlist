@@ -103,6 +103,9 @@ function renderChart(chart_data, idSuffix = '')
             plugins: {
                 legend: {
                     display: false,
+                },
+                tooltip: {
+                    enabled: false,
                 }
             }
         }
