@@ -1,0 +1,32 @@
+{{ formset.management_form }}
+{{ formset.non_form_errors }}
+<div class="task-template-list" data-prefix="{{ formset.prefix }}">
+    {% for task_form in formset %}
+    <div class="task-template-row{% if not task_form.instance.pk %} is-empty{% endif %}">
+        {{ task_form.id }}
+        <div class="task-input-wrap">
+            {{ task_form.title }}
+            {{ task_form.DELETE }}
+            <button type="button" class="remove-task-row" aria-label="Remove Task" title="Remove Task">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor">
+                    <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<template class="task-row-template" data-prefix="{{ formset.prefix }}">
+    <div class="task-template-row is-empty">
+        {{ formset.empty_form.id }}
+        <div class="task-input-wrap">
+            {{ formset.empty_form.title }}
+            {{ formset.empty_form.DELETE }}
+            <button type="button" class="remove-task-row" aria-label="Remove Task" title="Remove Task">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="currentColor">
+                    <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</template>

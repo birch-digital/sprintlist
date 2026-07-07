@@ -1,15 +1,39 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}Services{% endblock %}
 
 {% block content %}
+<dialog id="_add_service_dialog" class="service-dialog">
+    <h1>Add Service</h1>
+    <form class="create" method="post" action="{% url 'boards:create_service' %}">
+        {% csrf_token %}
+        <div class="input-row">
+            <label for="{{ add_form.title.id_for_label }}">Title</label>
+            {{ add_form.title }}
+        </div>
+        <div class="input-row">
+            {% include 'boards/_estimated_days_field.html' with form=add_form %}
+        </div>
+        <div class="input-row">
+            <label>Tasks</label>
+            {% include 'boards/_task_checklist_fields.html' with formset=add_formset %}
+            <p class="form-hint">These tasks are added automatically to every new sprint generated from this service. You can edit these later. (Optional)</p>
+        </div>
+        <div class="dialog-actions">
+            <button class="green" type="submit">Add Service</button>
+            <button class="cancel" type="button" data-dialog-close>Cancel</button>
+        </div>
+    </form>
+</dialog>
 <div class="limit-width">
     <div class="kanban-view-header">
         <div class="header">
             <h1>Your Services</h1>
             <p class="kanban-board-desc">Services you offer. Select them when creating a project to auto-generate that project's sprints.</p>
         </div>
-        <a class="button green" href="{% url 'boards:create_service' %}">Add Service</a>
+        <button type="button" class="button green" data-open-dialog="_add_service_dialog">Add Service</button>
     </div>
     {% if services %}
     <div class="services">
@@ -32,11 +56,11 @@
                     {% endif %}
                 </div>
                 <div class="service-actions">
-                    <a class="button green icon square" href="{% url 'boards:edit_service' service.id %}" aria-label="Edit Service" title="Edit Service">
+                    <button type="button" class="button green icon square" data-open-dialog="_edit_service_dialog_{{ service.id }}" aria-label="Edit Service" title="Edit Service">
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
                             <path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l481-480q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 31q0 16-5.5 30.5T794-624L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
                         </svg>
-                    </a>
+                    </button>
                     <form method="post" action="{% url 'boards:delete_service' service.id %}">
                         {% csrf_token %}
                         <button type="submit" class="icon danger square" aria-label="Delete Service" title="Delete Service">
@@ -50,12 +74,37 @@
         </div>
         {% endfor %}
     </div>
+    {% for service in services %}
+    <dialog id="_edit_service_dialog_{{ service.id }}" class="service-dialog">
+        <h1>Edit Service</h1>
+        <form class="create" method="post" action="{% url 'boards:edit_service' service.id %}">
+            {% csrf_token %}
+            <div class="input-row">
+                <label for="{{ service.edit_form.title.id_for_label }}">Title</label>
+                {{ service.edit_form.title }}
+            </div>
+            <div class="input-row">
+                {% include 'boards/_estimated_days_field.html' with form=service.edit_form %}
+            </div>
+            <div class="input-row">
+                <label>Tasks</label>
+                {% include 'boards/_task_checklist_fields.html' with formset=service.edit_formset %}
+                <p class="form-hint">These tasks are added automatically to every new sprint generated from this service. You can edit these later. (Optional)</p>
+            </div>
+            <div class="dialog-actions">
+                <button class="green" type="submit">Save</button>
+                <button class="cancel" type="button" data-dialog-close>Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    {% endfor %}
     {% else %}
     <div class="no-boards-notice">
         <h2>You haven't added any services yet</h2>
         <p>Add the services you offer (e.g. "Blog", "Booking System") so you can quickly build project sprints from them.</p>
-        <a class="button green" href="{% url 'boards:create_service' %}">Add Service</a>
+        <button type="button" class="button green" data-open-dialog="_add_service_dialog">Add Service</button>
     </div>
     {% endif %}
 </div>
+<script src="{% static 'scripts/services.js' %}"></script>
 {% endblock %}

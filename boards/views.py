@@ -85,7 +85,7 @@ ServiceTaskFormSet = forms.inlineformset_factory(
     Service,
     ServiceTask,
     fields=['title'],
-    extra=5,
+    extra=1,
     can_delete=True
 )
 
@@ -368,10 +368,21 @@ def services_list(request):
         task_count=Count('template_tasks')
     ).order_by('title')
 
+    add_form = ServiceForm()
+    add_formset = ServiceTaskFormSet(instance=Service(), prefix='new_service')
+
+    for service in services:
+        service.edit_form = ServiceForm(instance=service, prefix=f'service_{service.id}')
+        service.edit_formset = ServiceTaskFormSet(instance=service, prefix=f'service_{service.id}')
+
     return render(
         request,
         'boards/services.html',
-        {'services': services}
+        {
+            'services': services,
+            'add_form': add_form,
+            'add_formset': add_formset,
+        }
     )
 
 @login_required
@@ -379,23 +390,15 @@ def create_service(request):
     ''' Create '''
     if request.method == 'POST':
         form = ServiceForm(request.POST)
-        formset = ServiceTaskFormSet(request.POST, instance=Service())
+        formset = ServiceTaskFormSet(request.POST, instance=Service(), prefix='new_service')
         if form.is_valid() and formset.is_valid():
             service = form.save(commit=False)
             service.owner = request.user
             service.save()
             formset.instance = service
             formset.save()
-            return redirect('boards:services_list')
-    else:
-        form = ServiceForm()
-        formset = ServiceTaskFormSet(instance=Service())
 
-    return render(
-        request,
-        'boards/service_form.html',
-        {'form': form, 'formset': formset, 'editing': False}
-    )
+    return redirect('boards:services_list')
 
 @login_required
 def edit_service(request, service_id):
@@ -403,21 +406,14 @@ def edit_service(request, service_id):
     service = get_object_or_404(Service, id=service_id, owner=request.user)
 
     if request.method == 'POST':
+        prefix = f'service_{service.id}'
         form = ServiceForm(request.POST, instance=service)
-        formset = ServiceTaskFormSet(request.POST, instance=service)
+        formset = ServiceTaskFormSet(request.POST, instance=service, prefix=prefix)
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
-            return redirect('boards:services_list')
-    else:
-        form = ServiceForm(instance=service)
-        formset = ServiceTaskFormSet(instance=service)
 
-    return render(
-        request,
-        'boards/service_form.html',
-        {'form': form, 'formset': formset, 'editing': True, 'service': service}
-    )
+    return redirect('boards:services_list')
 
 @login_required
 def delete_service(request, service_id):
