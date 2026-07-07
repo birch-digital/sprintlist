@@ -15,6 +15,19 @@
             {{ form.description.label_tag }}
             {{ form.description }}
         </div>
+        <div class="input-row">
+            <label>Services Provided</label>
+            {% if user_services %}
+                <div class="service-picker">
+                    {{ form.services }}
+                </div>
+            {% else %}
+                <p class="no-services-hint">
+                    You haven't added any services yet.
+                    <a href="{% url 'boards:services_list' %}">Add one</a> to auto-generate sprints for new projects.
+                </p>
+            {% endif %}
+        </div>
         <button class="green" type="submit">Create Project</button>
         <button class="cancel" id="_dialog_close" type="button">Cancel</button>
     </form>

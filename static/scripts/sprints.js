@@ -39,31 +39,36 @@ function renderSprints()
         const day_txt_start = sprint.querySelector('div.start-days');
         const day_txt_due = sprint.querySelector('div.due-days');
 
+        const has_due_date = !!date_due_element.dataset.date;
+
         const date_start = new Date(date_start_element.dataset.date);
-        const date_due = new Date(date_due_element.dataset.date);
+        const date_due = has_due_date ? new Date(date_due_element.dataset.date) : null;
         const date_now = new Date();
 
         const diff_start = getdaysBetweenDates(date_start, date_now);
-        const diff_due = getdaysBetweenDates(date_now, date_due);
+        const diff_due = has_due_date ? getdaysBetweenDates(date_now, date_due) : null;
 
         const sprint_has_started = (date_start.getTime() < date_now.getTime());
-        const sprint_has_ended = (date_due.getTime() < date_now.getTime());
+        const sprint_has_ended = has_due_date && (date_due.getTime() < date_now.getTime());
 
         day_txt_start.innerText = sprint_has_started ? "Started " + diff_start + " days ago" : "Starts in " + diff_start + " days";
-        day_txt_due.innerText = sprint_has_ended ? "Ended " + diff_due + " days ago" :  "Ends in " + diff_due + " days";
+        day_txt_due.innerText = !has_due_date ? "No due date set" : (sprint_has_ended ? "Ended " + diff_due + " days ago" : "Ends in " + diff_due + " days");
 
         let style_day_txt_start = 'normal';
         let style_day_txt_due = 'normal';
         if (sprint_has_started)
         {
-            if (sprint_has_ended)
+            if (has_due_date)
             {
-                style_day_txt_due = "warning";
-            }
-            else
-            {
-                if (diff_due <= 3) {style_day_txt_due = "warning";}
-                else if (diff_due <= 7) {style_day_txt_due = "caution";}
+                if (sprint_has_ended)
+                {
+                    style_day_txt_due = "warning";
+                }
+                else
+                {
+                    if (diff_due <= 3) {style_day_txt_due = "warning";}
+                    else if (diff_due <= 7) {style_day_txt_due = "caution";}
+                }
             }
         }
         else

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Board, Sprint, Task
+from .models import Board, Service, ServiceTask, Sprint, Task
 
 # AI
 @admin.register(Board)
@@ -8,11 +8,23 @@ class BoardAdmin(admin.ModelAdmin):
     list_filter = ('owner',)
 
 
+class ServiceTaskInline(admin.TabularInline):
+    model = ServiceTask
+    extra = 1
+
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('title', 'owner', 'estimated_days')
+    list_filter = ('owner',)
+    inlines = [ServiceTaskInline]
+
+
 @admin.register(Sprint)
 class SprintAdmin(admin.ModelAdmin):
-    list_display = ('title', 'board', 'start_date', 'due_date', 'get_owner')
+    list_display = ('title', 'board', 'service', 'start_date', 'due_date', 'get_owner')
     list_filter = ('board', 'start_date')
-    
+
     def get_owner(self, obj):
         return obj.board.owner
     get_owner.short_description = 'Owner'

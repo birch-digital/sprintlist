@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{% if editing %}Edit Service{% else %}Add Service{% endif %}{% endblock %}
+
+{% block content %}
+<div class="limit-width">
+    <h1>{% if editing %}Edit Service{% else %}Add Service{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <h3>Task Checklist</h3>
+        <p class="form-hint">Optional &mdash; these tasks are added automatically to every new sprint generated from this service. You can edit this later or add custom tasks per project.</p>
+        {{ formset.management_form }}
+        {{ formset.non_form_errors }}
+        <div class="task-template-list">
+            {% for task_form in formset %}
+            <div class="task-template-row">
+                {{ task_form.id }}
+                {{ task_form.title }}
+                {% if task_form.instance.pk %}
+                <label class="remove-checkbox">{{ task_form.DELETE }} Remove</label>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <a class="button" href="{% url 'boards:services_list' %}">Cancel</a>
+        <button class="green" type="submit">Save</button>
+    </form>
+</div>
+{% endblock %}

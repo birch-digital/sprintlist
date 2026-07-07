@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<div class="limit-width">
+    <div class="kanban-view-header">
+        <div class="header">
+            <h1>Your Services</h1>
+            <p class="kanban-board-desc">Services you offer. Select them when creating a project to auto-generate that project's sprints.</p>
+        </div>
+        <a class="button green" href="{% url 'boards:create_service' %}">Add Service</a>
+    </div>
+    {% if services %}
+    <div class="services">
+        {% for service in services %}
+        <div class="service">
+            <div class="title-bar">
+                <h2>{{ service.title }}</h2>
+            </div>
+            {% if service.description %}
+            <p class="desc">{{ service.description }}</p>
+            {% endif %}
+            {% if service.estimated_days %}
+            <div class="status-pill">Est. {{ service.estimated_days }} day{{ service.estimated_days|pluralize }}</div>
+            {% endif %}
+            <div class="service-actions">
+                <a class="button" href="{% url 'boards:edit_service' service.id %}">Edit</a>
+                <form method="post" action="{% url 'boards:delete_service' service.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="icon danger square" aria-label="Delete Service" title="Delete Service">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-boards-notice">
+        <h2>You haven't added any services yet</h2>
+        <p>Add the services you offer (e.g. "Blog", "Booking System") so you can quickly build project sprints from them.</p>
+        <a class="button green" href="{% url 'boards:create_service' %}">Add Service</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

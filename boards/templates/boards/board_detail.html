@@ -162,6 +162,12 @@
                         <span class="sprint-dot" style="background-color: {{ sprint_colour }};"></span>
                         <h2>{{ sprint.info.title }}</h2>
                     </div>
+                    {% if sprint.info.service or sprint.info.planned_days %}
+                    <div class="sprint-service-tag">
+                        {% if sprint.info.service %}{{ sprint.info.service.title }}{% endif %}
+                        {% if sprint.info.planned_days %} &middot; Est. {{ sprint.info.planned_days }} day{{ sprint.info.planned_days|pluralize }}{% endif %}
+                    </div>
+                    {% endif %}
                     <div class="status">{{ sprint.counts.done }}/{{ sprint.counts.total }} complete</div>
                 </div>
                 {% if sprint.counts.total > 0 %}
@@ -195,7 +201,7 @@
             <div class="right">
                 <div class="date-lockup">
                     <div class="title">Due Date</div>
-                    <div class="date due-date" data-date="{{ sprint.info.due_date|date:'Y-m-d' }}">{{ sprint.info.due_date }}</div>
+                    <div class="date due-date" data-date="{{ sprint.info.due_date|date:'Y-m-d' }}">{{ sprint.info.due_date|default:"Not set" }}</div>
                     <div class="days due-days">Started 22 days ago</div>
                 </div>
                 <div class="sprint-actions">

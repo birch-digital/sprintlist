@@ -28,9 +28,20 @@ from .models import *
 ## Adding Boards
 ## ---
 class BoardForm(forms.ModelForm):
+    services = forms.ModelMultipleChoiceField(
+        queryset=Service.objects.none(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
     class Meta:
         model = Board
         fields = ['title', 'description']
+
+    def __init__(self, *args, owner=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if owner is not None:
+            self.fields['services'].queryset = Service.objects.filter(owner=owner).order_by('title')
 
 ## ---
 ## Adding Sprints
@@ -57,6 +68,28 @@ class UpdateState(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['state']
+
+## ---
+## Adding Services
+## ---
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = ['title', 'description', 'estimated_days']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 3}),
+        }
+
+## ---
+## Adding a service's task checklist
+## ---
+ServiceTaskFormSet = forms.inlineformset_factory(
+    Service,
+    ServiceTask,
+    fields=['title'],
+    extra=5,
+    can_delete=True
+)
 
 
 ###############################################################################
@@ -102,12 +135,13 @@ def dashboard(request):
             board.wipstyle = create_bar('wip', wip_percent)
             board.donestyle = create_bar('done', done_percent)
 
-    form = BoardForm()
+    form = BoardForm(owner=request.user)
+    user_services = Service.objects.filter(owner=request.user).order_by('title')
 
     return render(
-        request, 
-        'boards/dashboard.html', 
-        {'boards': boards, 'form': form}
+        request,
+        'boards/dashboard.html',
+        {'boards': boards, 'form': form, 'user_services': user_services}
     )
 
 ## ---
@@ -117,11 +151,23 @@ def dashboard(request):
 def create_board(request):
     ''' Create '''
     if request.method == 'POST':
-        form = BoardForm(request.POST)
+        form = BoardForm(request.POST, owner=request.user)
         if form.is_valid():
             board = form.save(commit=False)
             board.owner = request.user
             board.save()
+
+            today = datetime.date.today()
+            for service in form.cleaned_data['services']:
+                sprint = Sprint.objects.create(
+                    board=board,
+                    service=service,
+                    title=service.title,
+                    start_date=today,
+                    planned_days=service.estimated_days
+                )
+                for template_task in service.template_tasks.all():
+                    Task.objects.create(sprint=sprint, task_title=template_task.title)
 
     return redirect('boards:dashboard')
 
@@ -170,7 +216,11 @@ def board_detail(request, board_id):
 
     today = datetime.date.today()
     current_sprint = next(
-        (s for s in sprint_list if s.info.start_date <= today <= s.info.due_date),
+        (
+            s for s in sprint_list
+            if s.info.start_date <= today
+            and (s.info.due_date is None or today <= s.info.due_date)
+        ),
         None
     )
     if current_sprint is not None:
@@ -305,7 +355,76 @@ def delete_task(request, board_id, sprint_id, task_id):
     if request.method == 'POST':
         task.delete()
         return redirect(
-            'boards:sprint_detail', 
-            board_id=board_id, 
+            'boards:sprint_detail',
+            board_id=board_id,
             sprint_id=sprint_id
         )
+
+## ---
+## Services
+## ---
+@login_required
+def services_list(request):
+    ''' Read '''
+    services = Service.objects.filter(owner=request.user).order_by('title')
+
+    return render(
+        request,
+        'boards/services.html',
+        {'services': services}
+    )
+
+@login_required
+def create_service(request):
+    ''' Create '''
+    if request.method == 'POST':
+        form = ServiceForm(request.POST)
+        formset = ServiceTaskFormSet(request.POST, instance=Service())
+        if form.is_valid() and formset.is_valid():
+            service = form.save(commit=False)
+            service.owner = request.user
+            service.save()
+            formset.instance = service
+            formset.save()
+            return redirect('boards:services_list')
+    else:
+        form = ServiceForm()
+        formset = ServiceTaskFormSet(instance=Service())
+
+    return render(
+        request,
+        'boards/service_form.html',
+        {'form': form, 'formset': formset, 'editing': False}
+    )
+
+@login_required
+def edit_service(request, service_id):
+    ''' Update '''
+    service = get_object_or_404(Service, id=service_id, owner=request.user)
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, instance=service)
+        formset = ServiceTaskFormSet(request.POST, instance=service)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            return redirect('boards:services_list')
+    else:
+        form = ServiceForm(instance=service)
+        formset = ServiceTaskFormSet(instance=service)
+
+    return render(
+        request,
+        'boards/service_form.html',
+        {'form': form, 'formset': formset, 'editing': True, 'service': service}
+    )
+
+@login_required
+def delete_service(request, service_id):
+    ''' Delete '''
+    service = get_object_or_404(Service, id=service_id, owner=request.user)
+
+    if request.method == 'POST':
+        service.delete()
+
+    return redirect('boards:services_list')

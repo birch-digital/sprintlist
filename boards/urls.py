@@ -56,4 +56,25 @@ urlpatterns = [
         views.delete_task,
         name='delete_task'
     ),
+    # Services
+    path(
+        'services/',
+        views.services_list,
+        name='services_list',
+    ),
+    path(
+        'services/add/',
+        views.create_service,
+        name='create_service',
+    ),
+    path(
+        'services/<int:service_id>/edit/',
+        views.edit_service,
+        name='edit_service',
+    ),
+    path(
+        'services/<int:service_id>/delete/',
+        views.delete_service,
+        name='delete_service',
+    ),
 ]
